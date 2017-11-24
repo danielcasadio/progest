@@ -1,85 +1,69 @@
-/*
-Escreva os procedimentos de consulta,
-insercao e remoçao de elementos em uma
-lista duplamente encadeada. Qual o custo
-de cadaprocedimento?
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct no{
-    int chave;
-    struct no *ant;
-    struct no *prox;
-}No;
+	int chave;
+	struct no *prox;
+} No;
 
-void printar(No *iniciodalista){
-    No *temp;
-    temp = iniciodalista;
-    while (temp != NULL){
-        printf("%d\n", temp->chave);
-        temp = temp->prox;
-    }
-}
-
-No * buscaeremove(int valor, No *iniciodalista){
-    No *temp;
-    temp = iniciodalista;
-    if (iniciodalista == NULL) printf("lista vazia");
-    else {
-        while ((temp != NULL) && (temp->chave != valor)){
-            temp = temp->prox;
-        }
-        if (temp->ant == NULL){
-            iniciodalista = temp->prox;
-            iniciodalista->ant = NULL;
-            }
-        else if (temp->prox == NULL){
-            temp->ant->prox = NULL;
-            
-        }
-        else {
-            temp->ant->prox = temp->prox;
-            temp->prox->ant = temp->ant;
-        }
-        free(temp);
-	return iniciodalista;
-    }
+void printar(No* inicio){
+	No* p = inicio; 
+	if (p) do {
+		printf("%d\n", p->chave);
+		p = p->prox;
+	} while (p!=inicio); 
 }
 
 
 int main(){
-    No *iniciodalista;
-    No *novoitem;
-    int valor;
-    iniciodalista = (No*) malloc(sizeof(No));
-    iniciodalista = NULL;
-    scanf("%d", &valor);
-    while (valor != -999){
-        /* insere elemento no INICIO da lista */
-        novoitem = (No*) malloc(sizeof(No));
-        novoitem->chave = valor;
-        novoitem->ant = NULL;
-        novoitem->prox = iniciodalista;
-        if (iniciodalista != NULL){
-            iniciodalista->ant = novoitem;
-        }
-        iniciodalista = novoitem;
-
-        scanf("%d", &valor);
-    }
-
-    printar(iniciodalista);
-
-
-    printf("valor a ser removido: ");
-    scanf("%d", &valor);
-    iniciodalista = buscaeremove(valor, iniciodalista);
-
-
-    printar(iniciodalista);
-
-
-    return 0;
+	No* inicio;
+	No* novoitem;
+	int valor;
+	
+	inicio = (No*) malloc(sizeof(No));
+	inicio = NULL;
+	
+	scanf("%d", &valor);
+	
+	while (valor != -999){
+		
+		novoitem = (No*) malloc(sizeof(No));
+		novoitem->chave = valor;
+		
+		/* se a lista esta vazia */
+		if (inicio == NULL){
+            novoitem->prox = novoitem;
+            inicio = novoitem;
+		}
+		
+		/* insercao no inicio */
+		else {
+			novoitem->prox = inicio->prox;
+			inicio->prox = novoitem;
+		}
+		
+		inicio = novoitem;
+		scanf("%d", &valor);
+	}
+	inicio = inicio->prox;
+	printar(inicio);
+	
+	printf("valor a ser removido: ");
+	scanf("%d", &valor);
+	No* p = inicio;
+	No* ant;
+    p = inicio;
+    while (p->prox->chave != valor){ //busca o elemento que vem antes do que será excluido
+        p = p->prox;
+    } 
+    No* lixo;
+    lixo = p->prox; //coloca o primeiro elemento na variavel lixo
+    p->prox = lixo->prox; //coloca o segundo elemento como proximo do ultimo
+    inicio = p->prox; //muda o inicio para o segundo elemento, já que o primeiro será excluido
+    free(lixo); //libera o antigo primeiro elemento
+    // te amo <3 
+	
+	printar(inicio);
+	
+	return(0);
 }
