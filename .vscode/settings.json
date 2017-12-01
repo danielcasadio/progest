@@ -1,6 +1,7 @@
 {
     "python.linting.pylintEnabled": false,
     "files.associations": {
-        "lista.h": "c"
+        "lista.h": "c",
+        "pilha.h": "c"
     }
 }
