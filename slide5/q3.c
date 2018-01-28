@@ -24,7 +24,7 @@ int main(){
     printf("O numero %d aparece nos seguintes enderecos:\n", numero);
     for (i=0; i < n; i++) {
         aux = *addr;
-        printf("%i - %i - %p\n", i, aux, addr);
+        //printf("%i - %i - %p\n", i, aux, addr);
         if(aux == numero){
             printf("%p\n", addr);
         }
